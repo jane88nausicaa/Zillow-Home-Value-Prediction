@@ -6,8 +6,8 @@
 To select model, we first performed an inner join between `train_2016_v2.csv` and `properties_2016.csv` locally, to select the home features of the properties that were sold from 1/1/2016 to 12/31/2016.
 
 The python script is as follow:
-
 ```
+
 # Script filename: src/join.py
 def join():
     """
@@ -42,9 +42,9 @@ def join():
  ```
 The script will generate a new csv file `trainingData.csv`. Upload the file to Databricks cluster. Next operations are as follow:
 
-Random Forest Model, the corresponding python script is stored as `src/finalProject_randomforest.py`.
+[Random Forest Model](https://databricks-prod-cloudfront.cloud.databricks.com/public/4027ec902e239c93eaaa8714f173bcfc/7299685736592057/2614468934209616/3042362412750717/latest.html), the corresponding python script is stored as `src/finalProject_randomforest.py`.
 
-Gradient-Boosted Trees Model, the corresponding python script is stored as `src/finalProject_GBT.py`.
+[Gradient-Boosted Trees Model](https://databricks-prod-cloudfront.cloud.databricks.com/public/4027ec902e239c93eaaa8714f173bcfc/5516575657271442/1185864460293412/8718661597938584/latest.html), the corresponding python script is stored as `src/finalProject_GBT.py`.
 
 Based on results, random forest model was chosen.
 
@@ -61,8 +61,8 @@ DataFrame API read in libsvm format. We need to transform the dataset in to form
 Since Databricks's limit computation ability, transformations are accomplished locally.
 
 1. First reduce dimension. Since in pre-processing data analysis, we have identified column with low correlation. Directly drop those column.
-
 ```
+
 # Script filename: src/drop.py
  def drop():
      """
@@ -92,12 +92,9 @@ Since Databricks's limit computation ability, transformations are accomplished l
  drop()
 
 ```
-
 The script would read `properties_2016.csv` file line by line, and drop specific column, and store the data into file `drop_properties_2016.csv`.
 
 2. Transform the csv data to libsvm format.
-
-
 ```
 
 # Script filename: src/csv2libsvm.py
@@ -142,26 +139,22 @@ def csv2libsvm():
                     jdata.close()
                 nl = '0 ' +  nl + '\n'
                 nlibsvm.write(nl)
-
 csv2libsvm()
 
 ```
-
 The script would read `drop_properties_2016.csv` generateid in first step line by line. For each line, split and parse, two files would be generated.
 
  - `libsvm_drop_properties_2016.csv`
 
- For each line, set label as 0 (i.e. to be predict), generate libsvm format data based on the data list after split.
+For each line, set label as 0 (i.e. to be predict), generate libsvm format data based on the data list after split.
 
  - `libsvm_train.csv`
 
- For each line after split, if the first item (i.e. the parcel_id) exist in the train_2016_v2.csv (i.e. the data can be used for training), set label as the entry in the train_2016_v2.csv and generate a record in libsvm_train.csv.
+For each line after split, if the first item (i.e. the parcel_id) exist in the train_2016_v2.csv (i.e. the data can be used for training), set label as the entry in the train_2016_v2.csv and generate a record in libsvm_train.csv.
  
- 3. For prediction, we need to add transaction date to be predicted.
- 
- ```
- 
- 
+3. For prediction, we need to add transaction date to be predicted. 
+```
+
 # Script filename: src/add_transac.py
 def add_transac(date):
     """ Add transaction date to libsvm file. """
@@ -186,7 +179,6 @@ After these three steps, upload the files to Databricks cluster. Train based on 
 ### Use RDD to Build Model:
 
 RDD API could directly `read csv` file. However, to simplify data, we first change the transaction date in `train_2016_v2.csv` as two digit integer (i.e. discard the `year` in the date). It is easily achieved by python with following script.
-
 ```
 
 # Script filename: modifydata.py
@@ -199,7 +191,6 @@ with open(filename, 'r') as ori:
         nori.write(tid + ',' + err + ',' + data[5:7] + '\n')
 
 ```
-
 The script simply read `train_2016_v2.csv` line by line and delete the year of the transaction date, and a new file named `n_train_2016_v2.csv` would be generated..
 
 After such modification, upload the file `n_train_2016_v2.csv` and `properties_2016.csv` to Databricks cluster, and next operations are as follow:
