@@ -54,7 +54,7 @@ After choosing the model, we now consider the whole dataset.
 
 ### Use Dataframe to Build Model:
 
-DataFrame API read in libsvm format. We need to transform the dataset in to format of
+DataFrame API read in [libsvm](https://www.csie.ntu.edu.tw/~cjlin/libsvm/) format. We need to transform the dataset in to format of
 
 > Tuple( Label, List[(feature id, feature value)] )
 
@@ -94,7 +94,7 @@ Since Databricks's limit computation ability, transformations are accomplished l
 ```
 The script would read `properties_2016.csv` file line by line, and drop specific column, and store the data into file `drop_properties_2016.csv`.
 
-2. Transform the csv data to libsvm format.
+2. Transform the csv data to `libsvm` format.
 ```
 
 # Script filename: src/csv2libsvm.py
@@ -146,11 +146,11 @@ The script would read `drop_properties_2016.csv` generateid in first step line b
 
  - `libsvm_drop_properties_2016.csv`
 
-For each line, set label as 0 (i.e. to be predict), generate libsvm format data based on the data list after split.
+For each line, set label as 0 (i.e. to be predict), generate `libsvm` format data based on the data list after split.
 
  - `libsvm_train.csv`
 
-For each line after split, if the first item (i.e. the parcel_id) exist in the train_2016_v2.csv (i.e. the data can be used for training), set label as the entry in the train_2016_v2.csv and generate a record in libsvm_train.csv.
+For each line after split, if the first item (i.e. the `parcel_id`) exist in the `train_2016_v2.csv` (i.e. the data can be used for training), set label as the entry in the `train_2016_v2.csv` and generate a record in `libsvm_train.csv`.
  
 3. For prediction, we need to add transaction date to be predicted. 
 ```
@@ -174,7 +174,7 @@ The script would read `libsvm_drop_properties_2016.csv` generated in first step 
 
 After these three steps, upload the files to Databricks cluster. Train based on `libsvm_train.csv`, and predict with `predict_libsvm_drop_properties_2016.csv`. Operations are as follow:
 
-- Build Model and Predict with DataFrame API, the corresponding python script is stored as `src/DF_RandomForestModel.py`.
+- [Build Model and Predict with DataFrame API](https://databricks-prod-cloudfront.cloud.databricks.com/public/4027ec902e239c93eaaa8714f173bcfc/7299685736592057/3514397187244983/3042362412750717/latest.html), the corresponding python script is stored as `src/DF_RandomForestModel.py`.
 
 ### Use RDD to Build Model:
 
@@ -195,4 +195,4 @@ The script simply read `train_2016_v2.csv` line by line and delete the year of t
 
 After such modification, upload the file `n_train_2016_v2.csv` and `properties_2016.csv` to Databricks cluster, and next operations are as follow:
 
-- Build Model and Predict with RDD API, the corresponding python script is stored as `src/PredictRandomForest.py`.
+- [Build Model and Predict with RDD API](https://databricks-prod-cloudfront.cloud.databricks.com/public/4027ec902e239c93eaaa8714f173bcfc/7299685736592057/1213976575370233/3042362412750717/latest.html), the corresponding python script is stored as `src/PredictRandomForest.py`.
