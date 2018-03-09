@@ -1,5 +1,6 @@
 # Zillow’s Home Value Prediction (Zestimate)
 ## DataSet Source
+This project is an Exploratory Data Analysis for the kaggle competition "Zillow Prize: Zillow's Home Value Predition (Zestimate)". See https://www.kaggle.com/c/zillow-prize-1 for more details.
 - All the properties with their home features for 2016: properties_2016.csv
 - The training set with transactions from 1/1/2016 to 12/31/2016: train_2016_v2.csv
 ## Model Selection Random Forest Regression
